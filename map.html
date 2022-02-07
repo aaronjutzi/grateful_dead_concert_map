@@ -1,0 +1,82 @@
+<html>
+	<head>
+	
+			<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+		  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+		  crossorigin=""/>
+	  
+		 <!-- Make sure you put this AFTER Leaflet's CSS -->
+		 <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+		   integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+		   crossorigin=""></script>
+		   
+		 <!-- Load Esri Leaflet from CDN -->
+		  <script src="https://unpkg.com/esri-leaflet@3.0.1/dist/esri-leaflet.js"
+			integrity="sha512-JmpptMCcCg+Rd6x0Dbg6w+mmyzs1M7chHCd9W8HPovnImG2nLAQWn3yltwxXRM7WjKKFFHOAKjjF2SC4CgiFBg=="
+			crossorigin=""></script>
+			
+		<!-- Load Leaflet MarkerCluster and Esri Leaflet Cluster from CDN -->
+		  <link rel="stylesheet" type="text/css"
+			href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"
+			integrity="sha512-BBToHPBStgMiw0lD4AtkRIZmdndhB6aQbXpX7omcrXeG2PauGBl2lzq2xUZTxaLxYz5IDHlmneCZ1IJ+P3kYtQ=="
+			crossorigin="">
+		  <link rel="stylesheet" type="text/css" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
+			integrity="sha512-RLEjtaFGdC4iQMJDbMzim/dOvAu+8Qp9sw7QE4wIMYcg2goVoivzwgSZq9CsIxp4xKAZPKh5J2f2lOko2Ze6FQ=="
+			crossorigin="">
+		  <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"
+			integrity="sha512-MQlyPV+ol2lp4KodaU/Xmrn+txc1TP15pOBF/2Sfre7MRsA/pB4Vy58bEqe9u7a7DczMLtU5wT8n7OblJepKbg=="
+			crossorigin=""></script>
+		  <script src="https://unpkg.com/esri-leaflet-cluster@2.1.0/dist/esri-leaflet-cluster.js"
+			integrity="sha512-fEdNFHisleVtEYdLhW4Z2RsR7TN6hLutE/+O4D+skfTNY2rlHm8HOZARPWkdrFFy/+i2KjFxcZAKTUWaVfbV0g=="
+			crossorigin=""></script>
+			
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		 
+		<script src="https://js.arcgis.com/4.18/"></script>
+		 <style>  
+			#mapid { height: 100%; }
+			
+		 </style> 
+	</head>
+	<body>
+	
+		<div id="mapid"></div>
+			
+			</div>
+		<script>
+		
+		
+		
+        // Creating the map variable and setting zoom and coordinates to Ontario, Canada     
+		var map = L.map('mapid').setView([51.2538, -85.3232], 5);
+		
+		L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiYWp1dHppIiwiYSI6ImNrbGQ3d2E4MTE3cHAydXFlanJ1aG9maG4ifQ.6MOuQtvruOzh95-1C3i0jg', {
+			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+			maxZoom: 19,
+			id: 'mapbox/streets-v11',
+			tileSize: 512,
+			zoomOffset: -1,
+			accessToken: 'pk.eyJ1IjoiYWp1dHppIiwiYSI6ImNrbGQ3d2E4MTE3cHAydXFlanJ1aG9maG4ifQ.6MOuQtvruOzh95-1C3i0jg'
+		}).addTo(map);
+		
+        //var data = "myfile.geojson";
+		//L.geoJSON(geojsonFeature).addTo(map);	
+
+		//L.geoJSON(JSON.parse(data)).addTo(map);
+		
+		
+		
+		$.ajax({
+					type: "POST",
+					url: 'https://aaronjutzi.github.io/grateful_dead_concert_map/myfile.geojson',
+					dataType: 'json',
+					success: function (response) {
+						geojsonLayer = L.geoJson(response).addTo(map);
+						map.fitBounds(geojsonLayer.getBounds());
+					}
+				});
+		
+		</script>
+
+	</body>
+</html>
